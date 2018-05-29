@@ -1,0 +1,113 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+struct Failas
+{
+    int eil;
+    int taip;
+    int ne;
+    string kl;
+};
+
+void nuskaityk(Failas Duomenis[], int &n)
+{
+    ifstream duom("duomenis.txt");
+    duom >> n;
+    for(int i=0; i<n; i++)
+    {
+        duom >> Duomenis[i].eil;
+        duom >> Duomenis[i].taip;
+        duom >> Duomenis[i].ne;
+        getline(duom,Duomenis[i].kl);
+    }
+}
+
+void spausd(Failas Duomenis[], int n)
+{
+    for(int i=0; i<n; i++)
+    {
+        cout << Duomenis[i].eil<<" ";
+        cout << Duomenis[i].taip<<" ";
+        cout << Duomenis[i].ne <<" ";
+        cout << Duomenis[i].kl<<endl;
+    }
+    cout <<endl;
+}
+
+void zaidimas(Failas Duomenis[], int n)
+{
+    int i=0, a, b;
+    int  ats;
+    while(Duomenis[i].taip!=0 || Duomenis[i].ne!=0)
+    {
+        cout << Duomenis[i].kl <<endl;
+        cout << "  Pasirinkite:  " <<endl;
+        cout << "----------------"<<endl;
+        cout << " 1-taip   0-ne  "<<endl;
+        cin >> a;
+        if(a==1)
+        {
+            ats = Duomenis[i].taip;
+            i=ats-1;
+        }
+        else
+        {
+            ats = Duomenis[i].ne;
+            i=ats-1;
+        }
+    }
+    cout << "Ataskymas: " << Duomenis[i].kl <<endl;
+    cout << "Ar kompiuteris atspejo? " <<endl;
+    cout << "----------------"<<endl;
+    cout << " 1-taip   0-ne  "<<endl;
+    cin >> b;
+    switch(b)
+    {
+        case 0:
+            {
+                cout << "Iveskite savo atsakyma: " <<endl;
+                cin >> Duomenis[n].kl;
+                Duomenis[n].eil=n+1;
+                Duomenis[n].ne = 0;
+                Duomenis[n].taip = 0;
+                n++;
+                Duomenis[i].ne = n+1;
+                cout << "Iveskite klausima atsakymui:"<<endl;
+                cin >>ws;
+                getline(cin,Duomenis[n].kl);
+                Duomenis[n].eil=n+1;
+                Duomenis[n].ne = 0;
+                Duomenis[n].taip = n;
+                n++;
+                ofstream rez("duomenis.txt");
+                rez << n <<endl;
+
+                for(int i=0; i<n; i++)
+                {
+                    rez << Duomenis[i].eil<<" ";
+                    rez << Duomenis[i].taip<<" ";
+                    rez << Duomenis[i].ne <<" ";
+                    rez << Duomenis[i].kl<<endl;
+                }
+                rez.close();
+                break;
+            }
+        case 1:
+            {
+                break;
+            }
+    }
+}
+
+int main()
+{
+    int n;
+    Failas Duomenis[20];
+    nuskaityk(Duomenis,n);
+    spausd(Duomenis,n);
+    zaidimas(Duomenis,n);
+    return 0;
+}
